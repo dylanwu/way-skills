@@ -1,6 +1,6 @@
 ---
 name: to-spec
-description: "Turn the current conversation into a spec saved to the repo's plans directory: no interview, just synthesis of what you've already discussed. User-invoked via /to-spec."
+description: "Turn the current conversation into a spec saved to the repo's plans directory: no interview, just synthesis of what you've already discussed. User-invoked only — never trigger it on your own."
 disable-model-invocation: true
 ---
 
@@ -14,7 +14,7 @@ Follow the repo's existing plans/design-docs convention if one exists; otherwise
 
 ## Process
 
-1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's established vocabulary (CLAUDE.md, existing docs) throughout the spec, and respect any documented architecture decisions in the area you're touching.
+1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's established vocabulary (CLAUDE.md / AGENTS.md, existing docs) throughout the spec, and respect any documented architecture decisions in the area you're touching.
 
 2. Sketch out the **seams** at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better — the ideal number is one. Check with the user that these seams match their expectations.
 
