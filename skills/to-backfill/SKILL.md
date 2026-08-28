@@ -1,5 +1,5 @@
 ---
-name: backfill
+name: to-backfill
 description: Discipline for one-off data backfills in multi-layer pipelines — downstream propagation assertions, fill-holes-not-overwrite, archive layout. Triggered by "补数", "backfill", "回填".
 ---
 

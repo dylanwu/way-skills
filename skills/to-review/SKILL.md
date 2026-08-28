@@ -1,5 +1,5 @@
 ---
-name: review
+name: to-review
 description: Pre-delivery self-review gate for data analysis reports, dashboards, and conclusions. Run BEFORE delivering any analysis deliverable. Generic checklist + causal-inference mines. Triggered by "交付前自查", "analysis review", "复查报告", "证伪".
 ---
 

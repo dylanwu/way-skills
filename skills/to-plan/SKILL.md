@@ -1,5 +1,5 @@
 ---
-name: handoff
+name: to-plan
 description: Write a plan or handoff document that a fresh session can pick up and execute. Use when pausing unfinished work, transferring context to a new session, or laying out a multi-step implementation. Triggered by "handoff", "交接", "写个 plan", "落个文档".
 ---
 

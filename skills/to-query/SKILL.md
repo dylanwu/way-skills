@@ -1,5 +1,5 @@
 ---
-name: query
+name: to-query
 description: Query-hygiene methodology for data-warehouse tables — partition liveness, metadata-vs-scan discipline, sentinels, join verification, double counting. Consult BEFORE writing SQL against partitioned warehouse tables. Triggered by "查数防雷", "query check", "分区探活".
 ---
 

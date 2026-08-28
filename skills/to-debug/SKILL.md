@@ -1,5 +1,5 @@
 ---
-name: debug
+name: to-debug
 description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
 ---
 
@@ -174,7 +174,7 @@ You MUST complete each phase before proceeding to the next.
    - Automated test if possible
    - One-off test script if no framework
    - MUST have before fixing
-   - Use the `tdd` skill for writing proper failing tests
+   - Use the `to-tdd` skill for writing proper failing tests
 
 2. **Implement Single Fix**
    - Address the root cause identified

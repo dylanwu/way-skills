@@ -1,5 +1,5 @@
 ---
-name: grill
+name: to-grill
 description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses trigger phrases like "grill", "逼问我", "拷问".
 ---
 

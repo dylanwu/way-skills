@@ -1,5 +1,5 @@
 ---
-name: tdd
+name: to-tdd
 description: Test-driven development. Use when building features or fixing bugs test-first, mentions of "red-green-refactor", or when changing model training / feature encoding / calibration code that has a pure-function core.
 ---
 
@@ -39,7 +39,7 @@ Ask: "What's the public interface, and which seams should we test?"
 
 ### Where TDD pays off
 
-The TDD sweet spot in ML code is the **pure-function layer**: feature encoding / mapping, dropout & mask rules, calibration computations. Pipeline SQL and training loops are poor TDD targets — their gates are different (see the `backfill` and `review` skills).
+The TDD sweet spot in ML code is the **pure-function layer**: feature encoding / mapping, dropout & mask rules, calibration computations. Pipeline SQL and training loops are poor TDD targets — their gates are different (see the `to-backfill` and `to-review` skills).
 
 ### Fixture iron rules
 
