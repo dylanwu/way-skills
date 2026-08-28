@@ -18,12 +18,11 @@ Build and maintain **way-skills**: a methodology-only, self-maintained skill ros
 **Done but unverified:**
 
 - `to-explore` (added 2026-08-28) and the `to-review` → `to-refute` rename are **uncommitted** in the working tree. Both are symlinked and load in both harnesses, but neither has run on real work.
-- Only `to-handoff` has been exercised in real sessions (twice; the first exposed the bare-root-`HANDOFF.md` naming bug, since fixed). `to-explore`, `to-grill`, `to-tdd` (driver *and* solo), `to-refute`, `to-query`, `to-backfill` have never run end-to-end.
+- Exercised for real so far: `to-handoff` (twice; the first exposed the bare-root-`HANDOFF.md` naming bug) and `to-backfill` (once, 2026-08-29, in the fancy-model repo — see the decision below). `to-explore`, `to-grill`, `to-spec`, `to-plan`, `to-tdd` (driver *and* solo), `to-refute`, `to-query` have never run end-to-end.
 
 **Not started:**
 
 - `chatbi-skills` repo still has a bare root `HANDOFF.md`; it should move to `docs/handoffs/ftx-consume-history-handoff.md`.
-- superpowers plugin is installed-but-disabled; its useful content is extracted (systematic-debugging → `to-debug`, driver mode → `to-tdd`, brainstorming → `to-explore`), so it can be uninstalled.
 - `~/.codex/AGENTS.md` is a 0-byte file. The global Claude Code rules (local-HTML-dashboard output, `提交MR` / `切回主分支` shortcuts) have no Codex equivalent. The user **declined** syncing them for now — do not do it unprompted.
 
 ## Key decisions and why
@@ -36,6 +35,7 @@ Build and maintain **way-skills**: a methodology-only, self-maintained skill ros
 - **Split skills by direction of work, not by topic.** `to-explore` is divergent (the model proposes 2–3 genuinely different candidates); `to-grill` is convergent (the model interrogates an existing position). Merging them was refuted on the same grounds as the earlier merged `plan-handoff`: one template serves neither. Same reason `to-plan` (forward-looking, zero-context executor) stays separate from `to-handoff` (state compaction at pause time).
 - **`to-tdd` defaults to driver mode where dispatch exists**: fresh subagent per slice, model named explicitly and matched to complexity (transcription → cheapest; prose/integration → standard, since turn count beats token price; design judgment → driver + user), review between cycles, escalate a stuck slice one tier up, parallelize only disjoint slices. Worktree-first: `.worktrees/<branch>` project-local and git-ignored, baseline tests before the first red, cleanup after the MR merges.
 - **Handoff identity from path or name**: living doc updated in place; `<work-dir>/HANDOFF.md` or `docs/handoffs/<topic>-handoff.md`; bare root `HANDOFF.md` banned. Plans/specs are dated files in `docs/plans/`.
+- **Dogfooding `to-backfill` paid immediately** (2026-08-29, fancy-model repo). A real backfill written from the skill shipped a gate that would have published unverified data to production, and review plus the session's own analysis produced four fixes, all now in the skill: verification gates must **fail closed** (`set -eo pipefail` for any piped check; assert *every marker present and zero* rather than *no marker non-zero*, which passes vacuously on empty or truncated output; assert marker count == partition count); copy **layout** from the most recent backfill task but never its toolchain, since archived tasks are frozen and their binaries go stale; when a write rewrites whole rows to change some columns, prove the rest untouched with a per-row hash multiset, from a programmatically generated column list. Both failure modes were reproduced here before accepting them. The skill also carried a `$0` that the harness replaced with the invocation's arguments — the roster now bans shell positional parameters outright.
 - **Adoption is not a copy.** Upstream material is stripped to method and restyled before it lands. `to-debug` carried four unconverted superpowers support files (636 lines of another project's TypeScript case study, with dated incident numbers) until 2026-08-28, when they were absorbed into an abstract Techniques section and deleted; the directory going from 697 lines to 63 is the size of the gap. `to-tdd`'s two support files were the same rot in a milder form — no foreign contamination, but the distillation had already happened *into* `SKILL.md` and the sources were left lying around: every overlapping point existed there in a better-stated form, and the two files' entire net contribution was two sentences (mock only at system boundaries; one logical assertion per test). Both shapes have the same tell: a skill directory much heavier than its neighbours. The roster is now uniformly one prose file per skill, 30–96 lines.
 - **The ML release gate was removed from `to-tdd`, not fixed** (2026-08-28). It listed four checks; an evidence review against fancy-model memory found exactly one traceable to a real post-mortem (verify traced `batch>1` for any new eval-time in-model logic — recorded verbatim in `feedback_embed_dropout_p1_trap.md`), one restatement of a design rule (channel-off uses a deterministic mask, not dropout `p=1.0`), and two invented to reach the number four (traced-vs-eager parity, sentinel inputs — the latter already covered correctly under Fixture iron rules). The name was itself a mis-transcription: 四件套 in this user's vocabulary means 身份四件套 = `dsp/budget/order/task`, four identity features, not a checklist. Deployment gates are project knowledge and live in fancy-model memory; `to-tdd` keeps only the universal kernel (test the artifact you deploy, not the one you trained). **Do not re-add.**
 - **Not absorbed: `to-tickets`** (mattpocock) — its value is tracker integration + multi-agent dispatch, which this single-session workflow doesn't need. Worth stealing later: blocked-by edges for to-plan tasks, expand–contract sequencing for wide refactors.
@@ -43,11 +43,9 @@ Build and maintain **way-skills**: a methodology-only, self-maintained skill ros
 
 ## Next steps
 
-1. Commit and PR the working-tree changes: `to-explore` + the `to-refute` rename (the user asked for one PR covering both).
-2. Dogfood pass — the roster's main open risk. Run `to-explore` → `to-grill` on a real design question, and `to-tdd` (solo mode under Codex, driver under Claude Code) plus `to-refute` on real work; fix the friction found.
-3. Move `chatbi-skills/HANDOFF.md` → `chatbi-skills/docs/handoffs/ftx-consume-history-handoff.md` (that repo, not this one).
-4. Optionally uninstall the superpowers plugin — content extracted, currently dead weight.
-5. Grow the roster only by the two principles + `to-` naming; append newly confirmed mines to `to-refute` / `to-query` / `to-backfill` from future post-mortems (method only; facts to memory).
+1. Dogfood pass — the roster's main open risk. Run `to-explore` → `to-grill` on a real design question, and `to-tdd` (solo mode under Codex, driver under Claude Code) plus `to-refute` on real work; fix the friction found.
+2. Move `chatbi-skills/HANDOFF.md` → `chatbi-skills/docs/handoffs/ftx-consume-history-handoff.md` (that repo, not this one).
+3. Grow the roster only by the two principles + `to-` naming; append newly confirmed mines to `to-refute` / `to-query` / `to-backfill` from future post-mortems (method only; facts to memory).
 
 ## Suggested skills
 
@@ -60,4 +58,4 @@ Build and maintain **way-skills**: a methodology-only, self-maintained skill ros
 - `git log` documents every decision round with rationale in the messages; PR #1 carries the Codex evidence in its description.
 - Project memory: `~/.claude/projects/-Users-dylanwu-NAS-bobodsm-Career-Fancy-Git-way-skills/memory/`
 - Codex CLI for testing: `/Applications/ChatGPT.app/Contents/Resources/codex` (not on `PATH`; the npm `@openai/codex` install is broken — missing vendor binary). Non-interactive check: `codex exec --ephemeral -s read-only`.
-- Source material: superpowers 6.3.0 cache at `~/.claude/plugins/cache/claude-plugins-official/superpowers/6.3.0/`; mattpocock/skills via `gh api repos/mattpocock/skills/...`.
+- Source material (both MIT): superpowers v6.3.0 — upstream `github.com/obra/superpowers`, reinstallable with `claude plugin install superpowers@claude-plugins-official` if a snapshot is ever needed again; mattpocock/skills via `gh api repos/mattpocock/skills/...`. The local plugin cache was removed on 2026-08-28 after extraction finished.
