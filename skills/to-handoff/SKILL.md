@@ -11,9 +11,9 @@ Produce a document that lets a fresh agent (or future you) continue the work wit
 
 A handoff is a **living document, updated in place** — not a dated archive entry. Its identity must come from its path or its name:
 
-1. A handoff for *this* workstream already exists (`HANDOFF.md` next to the work area, or a topic-named `HANDOFF-<topic>.md`) → update it in place.
+1. A handoff for *this* workstream already exists (`HANDOFF.md` next to the work area, or `docs/handoffs/<topic>.md`) → update it in place.
 2. Work scoped to a module/directory → `<work-dir>/HANDOFF.md` — the path carries the topic.
-3. Work not tied to one directory → `HANDOFF-<topic>.md` at the repo root, with a slug named after the scenario (e.g. `HANDOFF-ftx-consume-history.md`). A bare root `HANDOFF.md` is reserved for work that is genuinely about the repo as a whole — never use it for a topic-specific workstream, or the next unrelated handoff will collide with it.
+3. Work not tied to one directory → `docs/handoffs/<topic>.md`, with the slug named after the scenario (e.g. `docs/handoffs/ftx-consume-history.md`). Never a bare `HANDOFF.md` at the repo root — it carries no topic identity, and the next unrelated handoff would collide with it.
 4. A repeatable *operational procedure* is a **runbook**, not a handoff — if the repo has a runbooks directory, it goes there.
 
 Dated documents belong to `to-spec` / `to-plan` in the plans directory; don't file handoffs there. Never save to the OS temp directory — a handoff is a project artifact and belongs in the repo.
