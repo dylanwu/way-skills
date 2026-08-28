@@ -29,6 +29,16 @@ Ask: "What's the public interface, and which seams should we test?"
 - **Tautological**: the assertion recomputes the expected value the way the code does (`expect(add(a, b)).toBe(a + b)`, a snapshot derived by hand the same way, a constant asserted equal to itself), so it passes by construction and can never disagree with the code. Expected values must come from an independent source of truth: a known-good literal, a worked example, the spec.
 - **Horizontal slicing**: writing all tests first, then all implementation. Bulk tests verify _imagined_ behavior: you test the _shape_ of things rather than user-facing behavior, the tests go insensitive to real changes, and you commit to test structure before understanding the implementation. Work in **vertical slices** instead: one test → one implementation → repeat, each test a **tracer bullet** that responds to what the last cycle taught you.
 
+## Before the first red
+
+Reaching for this skill means the work is feature-scale — **never run the loop on the default branch**. Create a feature branch first, preferably in a **worktree** so the main checkout stays clean and usable:
+
+```bash
+git worktree add ../<repo>-<feature> -b feature/<name>
+```
+
+Every slice — including subagent dispatches — runs inside it. This also means the branch already exists when it's time to submit the MR/PR, and parallel slices that must touch overlapping files get their isolation for free (see Driver mode).
+
 ## Rules of the loop
 
 - **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
