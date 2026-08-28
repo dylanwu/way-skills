@@ -11,9 +11,9 @@ When exploring the codebase, read the project's CLAUDE.md / AGENTS.md and existi
 
 ## What a good test is
 
-Tests verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't. A good test reads like a specification: "user can checkout with valid cart" tells you exactly what capability exists, and it survives refactors because it doesn't care about internal structure.
+Tests verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't. A good test reads like a specification: "user can checkout with valid cart" tells you exactly what capability exists, and it survives refactors because it doesn't care about internal structure. One logical assertion per test — a test that checks several things names none of them when it fails.
 
-See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking guidelines.
+**Mock at system boundaries, nowhere else.** The legitimate targets are the things you don't control: external APIs, time and randomness, the filesystem, and databases (prefer a real test database where you can). Your own modules and internal collaborators are never mock targets; mocking them is precisely what couples a test to structure.
 
 ## Seams: where tests go
 
@@ -93,4 +93,4 @@ The TDD sweet spot in ML code is the **pure-function layer**: feature encoding /
 - **Pin down which encoding domain each interface consumes.** If an input column is already post-mapping, a test must fail when consumer code translates it a second time.
 - **Sentinel values belong in fixtures.** "Unscored/missing" sentinels must appear in test inputs, and sentinel conventions change over time (a real migration merged `-1` into `0`) — the right tests must fail when they do; prefer range predicates over equality on sentinels.
 
-<!-- Source: skeleton adapted from mattpocock/skills `tdd` (MIT); driver mode distilled from superpowers `subagent-driven-development` (MIT); ML appendix homegrown from project post-mortems. Maintained in way-skills. -->
+<!-- Source: skeleton adapted from mattpocock/skills `tdd` (MIT); driver mode distilled from superpowers `subagent-driven-development` (MIT); ML appendix homegrown from project post-mortems. Its two support files were absorbed here and dropped — all but two of their points already lived in this file, better stated. Maintained in way-skills. -->
