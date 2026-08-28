@@ -7,6 +7,12 @@ description: Grill the user relentlessly about a plan, decision, or idea. Use wh
 
 Interview the user relentlessly until you reach a shared understanding. The deliverable is a fully explored decision space — nothing silently assumed.
 
+This skill assumes a position already exists. If the user has an idea but no position yet, grilling lands as pressure rather than clarification — use `to-explore` to put candidate approaches on the table first, then come back and grill the one they pick.
+
+## Scope check first
+
+Before spending questions on detail, size the request. If it is really several independent subsystems, say so immediately and help decompose it — which pieces are separable, how they depend on each other, which goes first — then grill only the first piece. Questions spent refining a plan that needs decomposing first are wasted questions.
+
 ## The design tree
 
 Map the discussion as a **design tree**: every decision branches into the decisions that hang off it. The **frontier** is every decision whose prerequisites are already settled — the questions you can ask *now* without guessing at answers you haven't heard yet.

@@ -83,7 +83,7 @@ The same loop in one context. Unchanged: red before green, one slice at a time, 
 
 ### Where TDD pays off
 
-The TDD sweet spot in ML code is the **pure-function layer**: feature encoding / mapping, dropout & mask rules, calibration computations. Pipeline SQL and training loops are poor TDD targets — their gates are different (see the `to-backfill` and `to-review` skills).
+The TDD sweet spot in ML code is the **pure-function layer**: feature encoding / mapping, dropout & mask rules, calibration computations. Pipeline SQL and training loops are poor TDD targets — their gates are different (see the `to-backfill` and `to-refute` skills).
 
 ### Fixture iron rules
 

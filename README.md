@@ -5,7 +5,7 @@ A lightweight, self-maintained set of methodology skills for **Claude Code and C
 **Two design principles:**
 
 1. **Methodology only.** These skills carry transferable method, never business knowledge. Domain facts (table quirks, field semantics, repo paths) live in project memory and per-repo reference docs.
-2. **Uniform `to-` prefix.** The prefix is a namespace: it avoids collisions with built-in commands and other skill sets, and makes the batch visually one family: `to-grill`, `to-spec`, `to-plan`, `to-handoff`, `to-tdd`, `to-debug`, `to-review`, `to-query`, `to-backfill`.
+2. **Uniform `to-` prefix.** The prefix is a namespace: it avoids collisions with built-in commands and other skill sets, and makes the batch visually one family: `to-explore`, `to-grill`, `to-spec`, `to-plan`, `to-handoff`, `to-tdd`, `to-debug`, `to-refute`, `to-query`, `to-backfill`.
 
 ## Roster
 
@@ -13,13 +13,14 @@ Ordered by where they sit in the work lifecycle:
 
 | Name | Purpose | Origin |
 |------|---------|--------|
+| to-explore | Two-way exploration of an open idea into 2-3 genuinely different candidate approaches | distilled from superpowers brainstorming (MIT) |
 | to-grill | Relentless interview to stress-test a plan or design before work starts | adapted from mattpocock/skills (MIT) |
 | to-spec | Turn the current conversation into a spec saved to the repo's plans directory | adapted from mattpocock/skills (MIT) |
 | to-plan | Implementation plans that decompose work into independently verifiable tasks | homegrown, inspired by superpowers writing-plans |
 | to-handoff | Compact session state into a handoff document a fresh session can pick up | adapted from mattpocock/skills (MIT) |
 | to-tdd | Red-green TDD in driver mode (subagents implement, model by complexity), solo fallback where the harness has no dispatch, plus an ML appendix | mattpocock skeleton + superpowers driver mode (MIT), ML appendix homegrown |
 | to-debug | Root-cause-first debugging discipline with four phases | copied from the superpowers plugin v6.3.0 (MIT) |
-| to-review | Pre-delivery self-review gate for analysis deliverables: generic checklist + causal-inference mines | homegrown from refuted-conclusion post-mortems |
+| to-refute | Adversarial self-check that tries to kill every headline claim before an analysis ships: generic gate + causal-inference mines | homegrown from refuted-conclusion post-mortems |
 | to-query | Query-hygiene methodology for partitioned warehouse tables (liveness, sentinels, joins, double counting) | homegrown from query-incident post-mortems |
 | to-backfill | Backfill discipline for multi-layer pipelines: propagation assertions, fill-holes-not-overwrite, archiving | homegrown from backfill incidents |
 
@@ -29,7 +30,7 @@ Symlink each skill directory into the harness's skills directory. New symlinks a
 
 ```bash
 REPO=/Users/dylanwu/NAS/bobodsm/Career/Fancy/Git/way-skills
-SKILLS="to-grill to-spec to-plan to-handoff to-tdd to-debug to-review to-query to-backfill"
+SKILLS="to-explore to-grill to-spec to-plan to-handoff to-tdd to-debug to-refute to-query to-backfill"
 
 for n in $SKILLS; do ln -s $REPO/skills/$n ~/.claude/skills/$n; done   # Claude Code
 for n in $SKILLS; do ln -s $REPO/skills/$n ~/.codex/skills/$n;  done   # Codex
@@ -37,7 +38,7 @@ for n in $SKILLS; do ln -s $REPO/skills/$n ~/.codex/skills/$n;  done   # Codex
 
 ## Codex compatibility
 
-Verified on `codex-cli 0.150.0-alpha.12.2` (2026-08-28): all nine load through the symlinks, multi-file skill directories resolve (to-debug's four support files included), and cross-skill references work. Two harness differences are handled in-tree, so the same files serve both:
+Verified on `codex-cli 0.150.0-alpha.12.2` (2026-08-28): all ten load through the symlinks, multi-file skill directories resolve through the symlink, and cross-skill references work. Two harness differences are handled in-tree, so the same files serve both:
 
 | | Claude Code | Codex |
 |---|---|---|
@@ -57,3 +58,4 @@ Adapted files retain attribution comments at the bottom of each SKILL.md. mattpo
 
 - Homegrown skills grow by appending newly confirmed patterns when a real conclusion or pipeline dies in a new way — method only; the specific table/field/repo facts go to project memory instead.
 - Adapted skills are frozen snapshots — sync upstream manually only if something breaks.
+- Adoption is not a copy. Upstream material gets stripped to method and restyled before it lands: no other project's identifiers, dated incidents, or house style. `to-debug` shipped with four unconverted support files (636 lines of a TypeScript case study) until they were absorbed into its Techniques section on 2026-08-28 — a skill directory that is much heavier than its neighbours is the tell.
