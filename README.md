@@ -17,7 +17,7 @@ Ordered by where they sit in the work lifecycle:
 | to-spec | Turn the current conversation into a spec saved to the repo's plans directory | adapted from mattpocock/skills (MIT) |
 | to-plan | Implementation plans that decompose work into independently verifiable tasks | homegrown, inspired by superpowers writing-plans |
 | to-handoff | Compact session state into a handoff document a fresh session can pick up | adapted from mattpocock/skills (MIT) |
-| to-tdd | Red-green TDD skeleton plus an ML appendix (fixture rules, traced-model release smoke gate) | skeleton from mattpocock/skills (MIT), ML appendix homegrown |
+| to-tdd | Red-green TDD in driver mode (subagents implement, model by complexity) plus an ML appendix | mattpocock skeleton + superpowers driver mode (MIT), ML appendix homegrown |
 | to-debug | Root-cause-first debugging discipline with four phases | copied from the superpowers plugin v6.3.0 (MIT) |
 | to-review | Pre-delivery self-review gate for analysis deliverables: generic checklist + causal-inference mines | homegrown from refuted-conclusion post-mortems |
 | to-query | Query-hygiene methodology for partitioned warehouse tables (liveness, sentinels, joins, double counting) | homegrown from query-incident post-mortems |

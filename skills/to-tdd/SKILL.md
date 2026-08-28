@@ -1,6 +1,6 @@
 ---
 name: to-tdd
-description: Red → green test-driven development. Use when building features or fixing bugs test-first, or when changing model training / feature encoding / calibration code that has a pure-function core. Triggered by "TDD", "红绿循环", "test-first".
+description: Red → green test-driven development, run in driver mode by default (fresh subagents implement each slice, model matched to slice complexity). Use when building features or fixing bugs test-first, or when changing model training / feature encoding / calibration code that has a pure-function core. Triggered by "TDD", "红绿循环", "test-first".
 ---
 
 # Test-Driven Development
@@ -35,6 +35,17 @@ Ask: "What's the public interface, and which seams should we test?"
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
 - **Refactoring is not part of the loop.** It belongs to the review stage (use the built-in `/code-review` or `/simplify`), not the red → green implementation cycle.
 
+## Driver mode (default)
+
+Run the loop as a **driver**: this session coordinates; fresh subagents implement. The driver's context stays clean for seam decisions and review, and each cycle's tool output stays out of it.
+
+- **Dispatch one slice per subagent.** The brief is the subagent's whole world — it inherits nothing from this conversation. It contains: the seam under test, the failing test's intent (or exact code), the files it may touch, and the command that proves red → green. The subagent returns status, the test command with its output, and concerns — not the full diff. Hand larger artifacts over as file paths, never pasted content.
+- **Name the model explicitly, matched to slice complexity.** An omitted model silently inherits the session's — usually the most capable and most expensive. Transcription-grade slices (the brief carries the exact test and near-exact implementation, 1–2 files) → cheapest tier. Prose-driven implementation or multi-file integration → standard tier; cheap models take 2–3× the turns on multi-step prose work and cost more overall — turn count beats token price. Design judgment (the seam itself is in question) → not a dispatch at all; that is driver work, settled with the user.
+- **Review between cycles.** Read the diff and the test evidence before starting the next slice — a slice the driver hasn't reviewed isn't green. Never fix findings in the driver session; send them back.
+- **Escalate a stuck slice, don't grind it.** Resume the same agent with the findings once or twice; still stuck → fresh agent, one model tier up. Three failed fixes → stop and question the design (`to-debug`'s architecture rule).
+- **Parallelize only disjoint slices.** Slices on the same seam are serial by nature — each test responds to what the last cycle taught. Slices on different seams touching disjoint files may run concurrently; never two implementers in the same files, and isolate in worktrees if they must overlap.
+- **Batch same-shape work.** Several tiny edits of the same kind (a rename, a constant, a field) are one dispatch carrying the list, not N dispatches.
+
 ## ML appendix
 
 ### Where TDD pays off
@@ -56,4 +67,4 @@ Before deploying ANY model change, all four must pass:
 3. **Sentinel inputs** — unscored / sentinel rows through the traced model produce defined outputs, not garbage.
 4. **Channel-off uses a deterministic mask, never dropout with p=1.0** — dropout is train-only; p=1.0 leaves the embedding untrained yet *read at inference*, producing a seed-dependent bias. A mask is deterministic on both ends (verifiable bit-exact).
 
-<!-- Source: skeleton adapted from mattpocock/skills `tdd` (MIT); ML appendix homegrown from project post-mortems. Maintained in light-skills. -->
+<!-- Source: skeleton adapted from mattpocock/skills `tdd` (MIT); driver mode distilled from superpowers `subagent-driven-development` (MIT); ML appendix homegrown from project post-mortems. Maintained in light-skills. -->
