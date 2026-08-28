@@ -1,13 +1,12 @@
 # light-skills
 
-A lightweight, self-maintained set of engineering-process and data-analysis skills for Claude Code. Skills live in this repo under `skills/<name>/` and are symlinked into `~/.claude/skills/`. No plugins, no hooks — each skill loads only when invoked.
+A lightweight, self-maintained set of engineering-process and data-analysis skills for Claude Code. Skills live in this repo under `skills/<name>/` and are symlinked into `~/.claude/skills/`. No plugins, no hooks — each skill loads only when invoked. Every skill is both model-routable and user-invocable as `/<name>`.
 
 ## Roster
 
 | Name | Purpose | Origin |
 |------|---------|--------|
 | grilling | Relentless interview to stress-test a plan or design before work starts | adapted from mattpocock/skills (MIT) |
-| grill-me | User-invoked alias for grilling | adapted from mattpocock/skills (MIT) |
 | to-spec | Turn the current conversation into a spec saved to the repo's plans directory | adapted from mattpocock/skills (MIT) |
 | plan-handoff | Write plan / handoff documents that a fresh session can pick up, following each repo's existing conventions | homegrown, inspired by mattpocock handoff + superpowers writing-plans |
 | systematic-debugging | Root-cause-first debugging discipline with four phases | copied from the superpowers plugin v6.3.0 (MIT) |
@@ -22,7 +21,6 @@ Symlink each skill directory into `~/.claude/skills/`. New symlinks are picked u
 
 ```bash
 ln -s /Users/dylanwu/NAS/bobodsm/Career/Fancy/Git/light-skills/skills/grilling/ ~/.claude/skills/grilling
-ln -s /Users/dylanwu/NAS/bobodsm/Career/Fancy/Git/light-skills/skills/grill-me/ ~/.claude/skills/grill-me
 ln -s /Users/dylanwu/NAS/bobodsm/Career/Fancy/Git/light-skills/skills/to-spec/ ~/.claude/skills/to-spec
 ln -s /Users/dylanwu/NAS/bobodsm/Career/Fancy/Git/light-skills/skills/plan-handoff/ ~/.claude/skills/plan-handoff
 ln -s /Users/dylanwu/NAS/bobodsm/Career/Fancy/Git/light-skills/skills/systematic-debugging/ ~/.claude/skills/systematic-debugging
