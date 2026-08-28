@@ -1,0 +1,6 @@
+interface:
+  display_name: "To Spec"
+  short_description: "Turn this conversation into a saved spec"
+  default_prompt: "Use $to-spec to turn what we've discussed into a spec in the repo's plans directory."
+policy:
+  allow_implicit_invocation: false

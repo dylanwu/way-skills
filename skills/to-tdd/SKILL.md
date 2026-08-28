@@ -1,13 +1,13 @@
 ---
 name: to-tdd
-description: Red → green test-driven development, run in driver mode by default (fresh subagents implement each slice, model matched to slice complexity). Use when building features or fixing bugs test-first, or when changing model training / feature encoding / calibration code that has a pure-function core. Triggered by "TDD", "红绿循环", "test-first".
+description: Red → green test-driven development, run in driver mode where the harness supports subagent dispatch (fresh subagent per slice, model matched to complexity) and solo otherwise. Use when building features or fixing bugs test-first, or when changing model training / feature encoding / calibration code that has a pure-function core. Triggered by "TDD", "红绿循环", "test-first".
 ---
 
 # Test-Driven Development
 
 TDD is the red → green loop. This skill is the reference that makes that loop produce tests worth keeping: what a good test is, where tests go, the anti-patterns, and the rules of the loop. Every section applies on every cycle: consult them before and during the loop, not after.
 
-When exploring the codebase, read the project's CLAUDE.md and existing docs so test names and interface vocabulary match the project's domain language.
+When exploring the codebase, read the project's CLAUDE.md / AGENTS.md and existing docs so test names and interface vocabulary match the project's domain language.
 
 ## What a good test is
 
@@ -34,7 +34,7 @@ Ask: "What's the public interface, and which seams should we test?"
 Reaching for this skill means the work is feature-scale — **never run the loop on the default branch**. Set up isolation first:
 
 1. **Already isolated?** If the session is already inside a linked worktree (harness-created or otherwise), use it — never nest another.
-2. **Prefer the harness's native worktree tool** (e.g. `EnterWorktree`) — it owns placement, branching, and cleanup. Only without one, fall back to git, project-local:
+2. **Prefer the harness's native worktree tool** if it has one (Claude Code: `EnterWorktree`) — it owns placement, branching, and cleanup. Without one — Codex CLI has none — fall back to git, project-local:
    ```bash
    git check-ignore -q .worktrees || { echo ".worktrees/" >> .gitignore && git add .gitignore && git commit -m "ignore worktrees"; }
    git worktree add .worktrees/feature-<name> -b feature/<name>
@@ -42,7 +42,7 @@ Reaching for this skill means the work is feature-scale — **never run the loop
    The worktree lives inside the project (`.worktrees/` at the repo root) and the directory must be git-ignored before anything is created in it.
 3. **Verify a clean baseline** — run the existing test suite before writing the first red. A dirty baseline makes every later failure ambiguous.
 
-Every slice — including subagent dispatches — runs inside the worktree; the branch already exists when it's time to submit the MR/PR, and parallel slices that must touch overlapping files get their isolation for free (see Driver mode).
+Every slice — including any subagent dispatches — runs inside the worktree; the branch already exists when it's time to submit the MR/PR, and parallel slices that must touch overlapping files get their isolation for free (see Driver mode).
 
 **After the MR merges**, clean up in the same motion as returning to the default branch — a merged worktree left behind is stale state, exactly like a merged branch:
 
@@ -54,11 +54,13 @@ git worktree remove .worktrees/feature-<name> && git branch -d feature/<name>
 
 - **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
-- **Refactoring is not part of the loop.** It belongs to the review stage (use the built-in `/code-review` or `/simplify`), not the red → green implementation cycle.
+- **Refactoring is not part of the loop.** It belongs to the review stage — whatever review command or skill the harness provides (Claude Code: `/code-review`, `/simplify`; Codex: `$review-agent`) — not the red → green implementation cycle.
 
-## Driver mode (default)
+## Driver mode (default where the harness supports it)
 
 Run the loop as a **driver**: this session coordinates; fresh subagents implement. The driver's context stays clean for seam decisions and review, and each cycle's tool output stays out of it.
+
+**First confirm the harness can dispatch subagents.** If it cannot — Codex CLI has no dispatch mechanism and no per-dispatch model selection — go to Solo mode below. Never narrate a dispatch you did not make.
 
 - **Dispatch one slice per subagent.** The brief is the subagent's whole world — it inherits nothing from this conversation. It contains: the seam under test, the failing test's intent (or exact code), the files it may touch, and the command that proves red → green. The subagent returns status, the test command with its output, and concerns — not the full diff. Hand larger artifacts over as file paths, never pasted content.
 - **Name the model explicitly, matched to slice complexity.** An omitted model silently inherits the session's — usually the most capable and most expensive. Transcription-grade slices (the brief carries the exact test and near-exact implementation, 1–2 files) → cheapest tier. Prose-driven implementation or multi-file integration → standard tier; cheap models take 2–3× the turns on multi-step prose work and cost more overall — turn count beats token price. Design judgment (the seam itself is in question) → not a dispatch at all; that is driver work, settled with the user.
@@ -66,6 +68,16 @@ Run the loop as a **driver**: this session coordinates; fresh subagents implemen
 - **Escalate a stuck slice, don't grind it.** Resume the same agent with the findings once or twice; still stuck → fresh agent, one model tier up. Three failed fixes → stop and question the design (`to-debug`'s architecture rule).
 - **Parallelize only disjoint slices.** Slices on the same seam are serial by nature — each test responds to what the last cycle taught. Slices on different seams touching disjoint files may run concurrently; never two implementers in the same files, and isolate in worktrees if they must overlap.
 - **Batch same-shape work.** Several tiny edits of the same kind (a rename, a constant, a field) are one dispatch carrying the list, not N dispatches.
+
+## Solo mode (no subagent dispatch)
+
+The same loop in one context. Unchanged: red before green, one slice at a time, seams confirmed up front, worktree isolation. What replaces dispatch:
+
+- **Review between cycles still happens** — but it is your own diff, so read it cold against the test evidence before opening the next slice, and say what you checked. Self-review that skips the diff is not review.
+- **Cost control is a user-side knob, not yours.** With no model tiering, the only lever is the session's reasoning-effort setting (Codex: `model_reasoning_effort`), and you cannot change it mid-run. If a long stretch of transcription-grade slices is coming, say so and let the user dial it down before you start.
+- **Escalation becomes a design question, not a retry.** With no fresh agent to hand the slice to, a slice that fails twice goes straight to `to-debug`'s architecture rule: stop and question the design with the user.
+- **No parallel slices.** Run them serially. The disjointness analysis still earns its keep — it tells you which slices are independent enough to reorder.
+- **Context hygiene is now yours.** Prefer file paths over pasted content, and do not carry a finished slice's tool output into the next one.
 
 ## ML appendix
 
