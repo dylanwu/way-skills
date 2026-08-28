@@ -85,19 +85,12 @@ The same loop in one context. Unchanged: red before green, one slice at a time, 
 
 The TDD sweet spot in ML code is the **pure-function layer**: feature encoding / mapping, dropout & mask rules, calibration computations. Pipeline SQL and training loops are poor TDD targets — their gates are different (see the `to-backfill` and `to-refute` skills).
 
+**Test through the artifact you deploy, not the one you trained.** Logic that only takes effect at inference never runs during training-time checks, so a whole class of bug stays invisible until the first such rule ships. Exercise the exported model on a realistic batch shape — deployment-specific release gates themselves are project knowledge and belong in that project's docs, not here.
+
 ### Fixture iron rules
 
 - **Encoding tests must use a feature whose mapped id ≠ raw value.** Identity-mapped features (mapped id == raw value) make a test pass even when the code confuses the two encoding domains — a Critical encoding bug once escaped unit tests exactly this way. Pick a fixture feature where the two domains are distinguishable.
 - **Pin down which encoding domain each interface consumes.** If an input column is already post-mapping, a test must fail when consumer code translates it a second time.
 - **Sentinel values belong in fixtures.** "Unscored/missing" sentinels must appear in test inputs, and sentinel conventions change over time (a real migration merged `-1` into `0`) — the right tests must fail when they do; prefer range predicates over equality on sentinels.
-
-### Release smoke gate (the four checks)
-
-Before deploying ANY model change, all four must pass:
-
-1. **Traced vs eager parity** — traced model output matches eager `forward()` element-wise on a real batch.
-2. **Traced batch > 1** — `jit.trace` freezes python ints (`torch.ones(batch_size)` becomes batch=1 forever; use `torch.ones_like(x[:, 0])`). Any *new eval-time in-model logic* must be exercised through the **traced** graph with batch > 1 — train-only logic never enters the traced graph, so tracing bugs hide until the first eval-time rule lands.
-3. **Sentinel inputs** — unscored / sentinel rows through the traced model produce defined outputs, not garbage.
-4. **Channel-off uses a deterministic mask, never dropout with p=1.0** — dropout is train-only; p=1.0 leaves the embedding untrained yet *read at inference*, producing a seed-dependent bias. A mask is deterministic on both ends (verifiable bit-exact).
 
 <!-- Source: skeleton adapted from mattpocock/skills `tdd` (MIT); driver mode distilled from superpowers `subagent-driven-development` (MIT); ML appendix homegrown from project post-mortems. Maintained in way-skills. -->

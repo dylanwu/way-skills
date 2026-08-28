@@ -19,7 +19,6 @@ Build and maintain **way-skills**: a methodology-only, self-maintained skill ros
 
 - `to-explore` (added 2026-08-28) and the `to-review` → `to-refute` rename are **uncommitted** in the working tree. Both are symlinked and load in both harnesses, but neither has run on real work.
 - Only `to-handoff` has been exercised in real sessions (twice; the first exposed the bare-root-`HANDOFF.md` naming bug, since fixed). `to-explore`, `to-grill`, `to-tdd` (driver *and* solo), `to-refute`, `to-query`, `to-backfill` have never run end-to-end.
-- `to-tdd`'s ML appendix "four checks" release gate is an interpretation (traced-vs-eager, traced batch>1, sentinel inputs, mask-not-dropout); the user has not confirmed it matches their intended 四件套.
 
 **Not started:**
 
@@ -38,6 +37,7 @@ Build and maintain **way-skills**: a methodology-only, self-maintained skill ros
 - **`to-tdd` defaults to driver mode where dispatch exists**: fresh subagent per slice, model named explicitly and matched to complexity (transcription → cheapest; prose/integration → standard, since turn count beats token price; design judgment → driver + user), review between cycles, escalate a stuck slice one tier up, parallelize only disjoint slices. Worktree-first: `.worktrees/<branch>` project-local and git-ignored, baseline tests before the first red, cleanup after the MR merges.
 - **Handoff identity from path or name**: living doc updated in place; `<work-dir>/HANDOFF.md` or `docs/handoffs/<topic>-handoff.md`; bare root `HANDOFF.md` banned. Plans/specs are dated files in `docs/plans/`.
 - **Adoption is not a copy.** Upstream material is stripped to method and restyled before it lands. `to-debug` carried four unconverted superpowers support files (636 lines of another project's TypeScript case study, with dated incident numbers) until 2026-08-28, when they were absorbed into an abstract Techniques section and deleted; the directory going from 697 lines to 63 is the size of the gap. A skill directory much heavier than its neighbours is the tell.
+- **The ML release gate was removed from `to-tdd`, not fixed** (2026-08-28). It listed four checks; an evidence review against fancy-model memory found exactly one traceable to a real post-mortem (verify traced `batch>1` for any new eval-time in-model logic — recorded verbatim in `feedback_embed_dropout_p1_trap.md`), one restatement of a design rule (channel-off uses a deterministic mask, not dropout `p=1.0`), and two invented to reach the number four (traced-vs-eager parity, sentinel inputs — the latter already covered correctly under Fixture iron rules). The name was itself a mis-transcription: 四件套 in this user's vocabulary means 身份四件套 = `dsp/budget/order/task`, four identity features, not a checklist. Deployment gates are project knowledge and live in fancy-model memory; `to-tdd` keeps only the universal kernel (test the artifact you deploy, not the one you trained). **Do not re-add.**
 - **Not absorbed: `to-tickets`** (mattpocock) — its value is tracker integration + multi-agent dispatch, which this single-session workflow doesn't need. Worth stealing later: blocked-by edges for to-plan tasks, expand–contract sequencing for wide refactors.
 - **Cheap-model delegation** (user rule): mechanical, fully-specified subtasks go to haiku-tier subagents; the main model orchestrates and verifies. Don't block on questions — take the recommended option and note it.
 
@@ -45,10 +45,9 @@ Build and maintain **way-skills**: a methodology-only, self-maintained skill ros
 
 1. Commit and PR the working-tree changes: `to-explore` + the `to-refute` rename (the user asked for one PR covering both).
 2. Dogfood pass — the roster's main open risk. Run `to-explore` → `to-grill` on a real design question, and `to-tdd` (solo mode under Codex, driver under Claude Code) plus `to-refute` on real work; fix the friction found.
-3. Have the user confirm the ML appendix's four release checks match their intended 四件套.
-4. Move `chatbi-skills/HANDOFF.md` → `chatbi-skills/docs/handoffs/ftx-consume-history-handoff.md` (that repo, not this one).
-5. Optionally uninstall the superpowers plugin — content extracted, currently dead weight.
-6. Grow the roster only by the two principles + `to-` naming; append newly confirmed mines to `to-refute` / `to-query` / `to-backfill` from future post-mortems (method only; facts to memory).
+3. Move `chatbi-skills/HANDOFF.md` → `chatbi-skills/docs/handoffs/ftx-consume-history-handoff.md` (that repo, not this one).
+4. Optionally uninstall the superpowers plugin — content extracted, currently dead weight.
+5. Grow the roster only by the two principles + `to-` naming; append newly confirmed mines to `to-refute` / `to-query` / `to-backfill` from future post-mortems (method only; facts to memory).
 
 ## Suggested skills
 
