@@ -58,4 +58,5 @@ Adapted files retain attribution comments at the bottom of each SKILL.md. mattpo
 
 - Homegrown skills grow by appending newly confirmed patterns when a real conclusion or pipeline dies in a new way — method only; the specific table/field/repo facts go to project memory instead.
 - Adapted skills are frozen snapshots — sync upstream manually only if something breaks.
+- No shell positional parameters (`$0`, `$1`, …) anywhere in a skill body — the harness substitutes them with the invocation's arguments at load time, silently rewriting the text the model reads. Phrase around them.
 - Adoption is not a copy. Upstream material gets stripped to method and restyled before it lands: no other project's identifiers, dated incidents, or house style. `to-debug` shipped with four unconverted support files (636 lines of a TypeScript case study) until they were absorbed into its Techniques section on 2026-08-28 — a skill directory that is much heavier than its neighbours is the tell.
