@@ -1,11 +1,11 @@
 ---
-name: to-review
-description: Pre-delivery self-review gate for data analysis reports, dashboards, and conclusions. Run BEFORE delivering any analysis deliverable. Generic checklist + causal-inference mines. Triggered by "交付前自查", "analysis review", "复查报告", "证伪".
+name: to-refute
+description: Adversarial self-check on analysis conclusions before they ship — try to kill every headline claim, then pass it, fix it, or downgrade it to a hypothesis. Run BEFORE delivering any report, dashboard, or conclusion. NOT for reviewing code — use the harness's own review command for that. Triggered by "交付前自查", "证伪", "复查报告", "结论复核".
 ---
 
-# Analysis Review
+# Refuting Your Own Conclusions
 
-Before any analysis report / dashboard / conclusion ships, walk every headline claim through this gate. For each claim: pass, or fix, or **downgrade the claim** (from conclusion to hypothesis). First-round conclusions die often — a single routine sweep once had 3 of its entity-level conclusions refuted on re-examination.
+Before any analysis report / dashboard / conclusion ships, try to kill every headline claim, then walk it through this gate. This is not code review — it is adversarial self-checking of *claims*: what would have to be true for this number to mean something else? For each claim: pass, or fix, or **downgrade the claim** (from conclusion to hypothesis). First-round conclusions die often — a single routine sweep once had 3 of its entity-level conclusions refuted on re-examination.
 
 ## Generic gate
 

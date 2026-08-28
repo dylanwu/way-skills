@@ -15,7 +15,7 @@ Find the root cause before attempting any fix. Symptom fixes are failures. This 
 - **Reproduce consistently.** If you can't trigger it reliably, gather more data; don't guess.
 - **Check recent changes.** Diffs, new dependencies, config and environment differences.
 - **Instrument component boundaries.** In multi-component systems (CI → build → sign; API → service → DB), log what enters and exits each layer, run once, and let the evidence show *which* layer breaks — then investigate that layer.
-- **Trace backward to the origin.** Where does the bad value first appear? Keep tracing up the call stack until you find the source; fix at the source, not at the symptom. Full technique: [root-cause-tracing.md](root-cause-tracing.md).
+- **Trace backward to the origin.** Where does the bad value first appear? Keep tracing up the call stack until you find the source; fix at the source, not at the symptom (see Techniques).
 
 ## Phase 2 — Pattern analysis
 
@@ -52,10 +52,12 @@ Catching yourself thinking any of these means the process has already been aband
 
 If systematic investigation shows the issue is truly environmental or timing-dependent: document what you investigated, implement appropriate handling (retry, timeout, clear error), and add monitoring. But most "no root cause" verdicts are incomplete investigations.
 
-## Supporting techniques
+## Techniques
 
-- [root-cause-tracing.md](root-cause-tracing.md) — trace a bug backward through the call stack to its original trigger
-- [defense-in-depth.md](defense-in-depth.md) — add validation at multiple layers *after* the root cause is found
-- [condition-based-waiting.md](condition-based-waiting.md) — replace arbitrary timeouts with condition polling
+**Tracing backward.** When reading the code doesn't reveal where a bad value came from, instrument *before* the dangerous operation — not after it fails — capturing the call chain plus the context that would explain it (the argument, the working directory, the environment). Write to a channel the test harness cannot suppress; framework loggers often are. Run once, read the chain, and look for the pattern: same caller, same argument, same fixture. When the trigger is one test polluting another, bisect the suite until the pollution appears.
 
-<!-- Source: adapted from superpowers v6.3.0 `systematic-debugging` (MIT), restyled and condensed. Maintained in way-skills. -->
+**Defense in depth, after the fix.** A root-cause fix at a single point gets bypassed by a second call path, a refactor, or a mock. Once the data's route is known, validate at every layer it crosses: reject invalid input at the entry boundary, re-check the precondition where the logic assumes it, guard the dangerous operation against the context it must never run in (a destructive command outside a scratch directory during tests), and record the forensic context just before it runs. The layers are not redundant — each catches what the others structurally cannot.
+
+**Wait for conditions, not durations.** A fixed sleep is a guess about someone else's machine: it passes locally and fails under load. Poll the condition that actually matters, behind a timeout that names what it was waiting for. A fixed delay is legitimate only when you first wait for a triggering condition, the duration comes from known timing rather than guesswork, and a comment says which. The exception is testing timing behavior itself, where the duration *is* the subject.
+
+<!-- Source: adapted from superpowers v6.3.0 `systematic-debugging` (MIT), restyled and condensed. Its four support files were absorbed into Techniques and dropped — they were a TypeScript case study from another project, not method. Maintained in way-skills. -->
