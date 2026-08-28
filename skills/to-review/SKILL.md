@@ -30,4 +30,4 @@ Before any analysis report / dashboard / conclusion ships, walk every headline c
 
 This gate grows by subtraction from reality: every time a delivered or almost-delivered conclusion dies, its killer pattern gets appended here. Domain-specific mine lists (table quirks, field semantics) do NOT belong in this skill — they live in project memory and per-repo reference docs.
 
-<!-- Source: homegrown, distilled from refuted-conclusion post-mortems in project memory. Maintained in light-skills. -->
+<!-- Source: homegrown, distilled from refuted-conclusion post-mortems in project memory. Maintained in way-skills. -->

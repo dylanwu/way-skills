@@ -78,4 +78,4 @@ Any further notes about the feature.
 
 </spec-template>
 
-<!-- Source: adapted from mattpocock/skills `to-spec` (MIT); issue-tracker publishing replaced with a local plans-dir save. Maintained in light-skills. -->
+<!-- Source: adapted from mattpocock/skills `to-spec` (MIT); issue-tracker publishing replaced with a local plans-dir save. Maintained in way-skills. -->

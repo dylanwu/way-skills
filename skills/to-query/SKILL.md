@@ -31,4 +31,4 @@ Generic trap-prevention for querying partitioned warehouse tables (Hive / Trino 
 - **Check fan-out before joining.** Confirm the join key is unique on the dimension side (or aggregate first); a duplicated key multiplies metrics and the totals still look plausible.
 - **Different tables, different keys.** The same logical entity can be keyed differently across tables (user id vs external user id); confirm the documented key pair for each table combination, casting types explicitly.
 
-<!-- Source: homegrown, generalized from query-incident post-mortems in project memory. Maintained in light-skills. -->
+<!-- Source: homegrown, generalized from query-incident post-mortems in project memory. Maintained in way-skills. -->

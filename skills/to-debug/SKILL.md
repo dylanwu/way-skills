@@ -58,4 +58,4 @@ If systematic investigation shows the issue is truly environmental or timing-dep
 - [defense-in-depth.md](defense-in-depth.md) — add validation at multiple layers *after* the root cause is found
 - [condition-based-waiting.md](condition-based-waiting.md) — replace arbitrary timeouts with condition polling
 
-<!-- Source: adapted from superpowers v6.3.0 `systematic-debugging` (MIT), restyled and condensed. Maintained in light-skills. -->
+<!-- Source: adapted from superpowers v6.3.0 `systematic-debugging` (MIT), restyled and condensed. Maintained in way-skills. -->

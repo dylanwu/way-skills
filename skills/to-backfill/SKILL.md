@@ -36,4 +36,4 @@ One-off backfill scripts go into a dedicated per-task directory (dated, named), 
 
 Shared pieces go in a `common/` sibling. Never scatter one-off scripts into production script directories — stray backfill scripts once outnumbered the production SQL around them 16 to 9, unversioned. Follow the repo's existing backfill directory convention when one exists.
 
-<!-- Source: homegrown, generalized from backfill incidents in project memory. Maintained in light-skills. -->
+<!-- Source: homegrown, generalized from backfill incidents in project memory. Maintained in way-skills. -->

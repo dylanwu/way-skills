@@ -37,4 +37,4 @@ Finding facts is your job, never the user's. When a frontier question needs a fa
 
 The frontier is empty: every branch of the design tree visited, nothing left silently assumed. Do not act on the plan until the user confirms you have reached a shared understanding.
 
-<!-- Source: adapted from mattpocock/skills `grilling` (MIT). Maintained in light-skills. -->
+<!-- Source: adapted from mattpocock/skills `grilling` (MIT). Maintained in way-skills. -->

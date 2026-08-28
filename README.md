@@ -1,4 +1,4 @@
-# light-skills
+# way-skills
 
 A lightweight, self-maintained set of methodology skills for Claude Code. Skills live in this repo under `skills/<name>/` and are symlinked into `~/.claude/skills/`. No plugins, no hooks — each skill loads only when invoked, and every skill is both model-routable and user-invocable as `/<name>`.
 
@@ -29,7 +29,7 @@ Symlink each skill directory into `~/.claude/skills/`. New symlinks are picked u
 
 ```bash
 for n in to-grill to-spec to-plan to-handoff to-tdd to-debug to-review to-query to-backfill; do
-  ln -s /Users/dylanwu/NAS/bobodsm/Career/Fancy/Git/light-skills/skills/$n/ ~/.claude/skills/$n
+  ln -s /Users/dylanwu/NAS/bobodsm/Career/Fancy/Git/way-skills/skills/$n/ ~/.claude/skills/$n
 done
 ```
 

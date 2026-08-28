@@ -27,4 +27,4 @@ Follow the repo's existing plans/design-docs convention if one exists; otherwise
 
 To capture *session state* when pausing work, use `to-handoff` instead — a plan is forward-looking; it carries no "current state".
 
-<!-- Source: homegrown; structure inspired by superpowers `writing-plans` (MIT). Maintained in light-skills. -->
+<!-- Source: homegrown; structure inspired by superpowers `writing-plans` (MIT). Maintained in way-skills. -->

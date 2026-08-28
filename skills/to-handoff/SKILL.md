@@ -33,4 +33,4 @@ Dated documents belong to `to-spec` / `to-plan` in the plans directory; don't fi
 - Redact credentials, API keys, and personal data.
 - Prune superseded state on each update — a handoff that accretes history stops being readable; history lives in git.
 
-<!-- Source: adapted from mattpocock/skills `handoff` (MIT). Maintained in light-skills. -->
+<!-- Source: adapted from mattpocock/skills `handoff` (MIT). Maintained in way-skills. -->
