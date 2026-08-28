@@ -37,7 +37,7 @@ Each answered round reshapes the tree: settled decisions push the frontier outwa
 
 ## Facts are yours, decisions are the user's
 
-Finding facts is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, data tables, tool output), dispatch a sub-agent to find it; don't ask the user for anything you could look up yourself. Don't block on it: a running exploration is an unsettled prerequisite, so only the questions downstream of it wait — ask the rest of the frontier now. The decisions are the user's: put each to them and wait.
+Finding facts is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, data tables, tool output), go find it — dispatch a subagent if the harness has one, otherwise look it up yourself. Never ask the user for anything you could look up, and never narrate a dispatch the harness cannot make. Don't block on it: a running exploration is an unsettled prerequisite, so only the questions downstream of it wait — ask the rest of the frontier now. The decisions are the user's: put each to them and wait.
 
 ## Done when
 

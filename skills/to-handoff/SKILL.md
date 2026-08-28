@@ -13,7 +13,7 @@ A handoff is a **living document, updated in place** — not a dated archive ent
 
 1. A handoff for *this* workstream already exists (`HANDOFF.md` next to the work area, or `docs/handoffs/<topic>-handoff.md`) → update it in place.
 2. Work scoped to a module/directory → `<work-dir>/HANDOFF.md` — the path carries the topic.
-3. Work not tied to one directory → `docs/handoffs/<topic>-handoff.md`, with the slug named after the scenario (e.g. `docs/handoffs/ftx-consume-history-handoff.md`). Never a bare `HANDOFF.md` at the repo root — it carries no topic identity, and the next unrelated handoff would collide with it.
+3. Work not tied to one directory → `docs/handoffs/<topic>-handoff.md`, with the slug named after the scenario (e.g. `docs/handoffs/payment-retry-migration-handoff.md`). Never a bare `HANDOFF.md` at the repo root — it carries no topic identity, and the next unrelated handoff would collide with it.
 4. A repeatable *operational procedure* is a **runbook**, not a handoff — if the repo has a runbooks directory, it goes there.
 
 Dated documents belong to `to-spec` / `to-plan` in the plans directory; don't file handoffs there. Never save to the OS temp directory — a handoff is a project artifact and belongs in the repo.
@@ -29,7 +29,7 @@ Dated documents belong to `to-spec` / `to-plan` in the plans directory; don't fi
 
 ## Rules
 
-- Use absolute dates (2026-08-28), never "today" / "yesterday".
+- Use absolute dates (`YYYY-MM-DD`), never "today" / "yesterday".
 - Redact credentials, API keys, and personal data.
 - Prune superseded state on each update — a handoff that accretes history stops being readable; history lives in git.
 
