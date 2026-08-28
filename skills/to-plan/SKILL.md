@@ -11,14 +11,14 @@ Turn agreed scope (a spec, a settled discussion) into a plan that a skilled exec
 
 Follow the repo's existing plans/design-docs convention if one exists; otherwise default to `docs/plans/`. Filename: `YYYY-MM-DD-<topic>-plan.md` with today's actual date.
 
-## Plan structure
+## Structure
 
 - **Goal** — one sentence: what this builds.
 - **Approach** — 2–3 sentences; link the spec it implements (the plan argues from the spec, so the spec travels with it).
 - **Global constraints** — project-wide requirements copied verbatim (version floors, naming rules); every task implicitly includes them.
 - **Tasks** — ordered, checkbox syntax (`- [ ]`) for tracking. Each task states: exact files to create/modify, what earlier tasks it consumes and what later tasks rely on (exact names and signatures), the change itself, and the command that proves it worked with its expected output.
 
-## Quality rules
+## Rules
 
 - **Right-sized tasks**: the smallest unit that carries its own verify cycle. Fold setup/scaffolding into the task whose deliverable needs them; split only where a reviewer could reject one task while approving its neighbor.
 - **No placeholders**: "TBD", "add proper error handling", "similar to task N", "fill in details" are plan failures. Every step carries the actual content the executor needs — code steps show the code.
@@ -27,4 +27,4 @@ Follow the repo's existing plans/design-docs convention if one exists; otherwise
 
 To capture *session state* when pausing work, use `to-handoff` instead — a plan is forward-looking; it carries no "current state".
 
-<!-- Homegrown; structure inspired by superpowers `writing-plans` (MIT). Maintained in light-skills. -->
+<!-- Source: homegrown; structure inspired by superpowers `writing-plans` (MIT). Maintained in light-skills. -->

@@ -1,20 +1,26 @@
 ---
 name: to-spec
-description: "Turn the current conversation into a spec saved to the repo's plans directory: no interview, just synthesis of what you've already discussed."
+description: "Turn the current conversation into a spec saved to the repo's plans directory: no interview, just synthesis of what you've already discussed. User-invoked via /to-spec."
 disable-model-invocation: true
 ---
 
-This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.
+# Specs
+
+Turn the current conversation context and codebase understanding into a spec. Do not interview the user — synthesize what you already know.
+
+## Where it goes
+
+Follow the repo's existing plans/design-docs convention if one exists; otherwise default to `docs/plans/`. Filename: `YYYY-MM-DD-<feature-name>-spec.md` with today's actual date. Do not publish it anywhere online.
 
 ## Process
 
 1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's established vocabulary (CLAUDE.md, existing docs) throughout the spec, and respect any documented architecture decisions in the area you're touching.
 
-2. Sketch out the seams at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one.
+2. Sketch out the **seams** at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better — the ideal number is one. Check with the user that these seams match their expectations.
 
-Check with the user that these seams match their expectations.
+3. Write the spec using the template below, then save it (see "Where it goes").
 
-3. Write the spec using the template below, then save it to the repo's plan directory. Follow the repo's existing plans/design-docs convention if one exists; otherwise default to `docs/plans/`. Filename: `YYYY-MM-DD-<feature-name>-spec.md` with today's actual date. Do not publish it anywhere online.
+## Template
 
 <spec-template>
 
@@ -72,4 +78,4 @@ Any further notes about the feature.
 
 </spec-template>
 
-<!-- Adapted from mattpocock/skills `to-spec` (MIT License). Issue-tracker publishing replaced with local plans-dir save. Maintained in light-skills. -->
+<!-- Source: adapted from mattpocock/skills `to-spec` (MIT); issue-tracker publishing replaced with a local plans-dir save. Maintained in light-skills. -->

@@ -3,20 +3,19 @@ name: to-handoff
 description: Compact the current session's state into a handoff document a fresh session can pick up. Use when pausing unfinished work or transferring context to a new session. Triggered by "handoff", "交接".
 ---
 
-# Handoff Documents
+# Handoffs
 
 Produce a document that lets a fresh agent (or future you) continue the work without this conversation. Synthesize from what is already known — do not interview the user.
 
 ## Where it goes
 
-Follow the current repo's existing convention first; only fall back to the default when none exists:
+A handoff is a **living document, updated in place** — not a dated archive entry:
 
-1. A `HANDOFF.md` already sitting next to the work area → **update it in place**.
-2. An existing plans/design-docs directory → follow its location and naming pattern.
+1. A `HANDOFF.md` already sitting next to the work area → update it in place.
+2. None yet → create `HANDOFF.md` in the directory being worked on (repo root for repo-wide work).
 3. A repeatable *operational procedure* is a **runbook**, not a handoff — if the repo has a runbooks directory, it goes there.
-4. No convention found → `docs/plans/YYYY-MM-DD-<topic>-handoff.md`.
 
-Never save to the OS temp directory — these documents are project artifacts and belong in the repo.
+Dated documents belong to `to-spec` / `to-plan` in the plans directory; don't file handoffs there. Never save to the OS temp directory — a handoff is a project artifact and belongs in the repo.
 
 ## Structure
 
@@ -25,8 +24,12 @@ Never save to the OS temp directory — these documents are project artifacts an
 3. **Key decisions and why** — each decision with the reason it was made; refuted alternatives named so they don't get re-litigated.
 4. **Next steps** — a short ordered list inline. If the remaining work is substantial, write a proper plan via `to-plan` and link it here instead of inlining a weak one.
 5. **Suggested skills** — which skills the next session should invoke.
-6. **References** — link specs, plans, commits, dashboards, memory entries by path. Do NOT duplicate their content here.
+6. **References** — link specs, plans, commits, dashboards, memory entries by path. Do not duplicate their content here.
 
-Use absolute dates (2026-08-28), never "today" / "yesterday". Redact credentials and API keys.
+## Rules
 
-<!-- Adapted from mattpocock/skills `handoff` (MIT License). Maintained in light-skills. -->
+- Use absolute dates (2026-08-28), never "today" / "yesterday".
+- Redact credentials, API keys, and personal data.
+- Prune superseded state on each update — a handoff that accretes history stops being readable; history lives in git.
+
+<!-- Source: adapted from mattpocock/skills `handoff` (MIT). Maintained in light-skills. -->

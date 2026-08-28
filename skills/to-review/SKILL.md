@@ -3,11 +3,11 @@ name: to-review
 description: Pre-delivery self-review gate for data analysis reports, dashboards, and conclusions. Run BEFORE delivering any analysis deliverable. Generic checklist + causal-inference mines. Triggered by "交付前自查", "analysis review", "复查报告", "证伪".
 ---
 
-# Review — the analysis delivery gate
+# Analysis Review
 
 Before any analysis report / dashboard / conclusion ships, walk every headline claim through this gate. For each claim: pass, or fix, or **downgrade the claim** (from conclusion to hypothesis). First-round conclusions die often — a single routine sweep once had 3 of its entity-level conclusions refuted on re-examination.
 
-## Part 1 — Generic gate
+## Generic gate
 
 1. **Conclusion–evidence chain.** Every headline claim traces to a specific query/number present in the report. No claim may rest on a filter you invented: WHERE conditions come only from documented table semantics, playbooks, or the user — never from plausible inference. A speculative filter can silently drop valid data and still look reasonable.
 2. **Baseline legality.** Entity-level (account / campaign / segment) comparisons never use a single-day baseline — any day is somebody's anomaly day (alternate-day delivery, one-day spikes, budget rebuilds, holidays and promo days). Use a ~10-day series, median of several recent days as baseline, mark entities whose day/median ratio exceeds ~3× as baseline-anomalous, and check the baseline day itself for calendar events. Sparklines expose shapes (alternate-day patterns) that ratios can't.
@@ -17,7 +17,7 @@ Before any analysis report / dashboard / conclusion ships, walk every headline c
 6. **Which side moved.** A two-sided ratio gap (ours vs theirs) never names a culprit by itself — numerator collapse and denominator inflation draw the same curve. Compare each side's *absolute* volume day-over-day against a healthy reference day first.
 7. **Refutation pass.** For each surviving headline claim, spend one honest attempt to kill it: what confounder, data defect, or alternative mechanism would produce the same numbers? If you can't articulate the strongest counter-explanation, the claim isn't ready.
 
-## Part 2 — Causal-inference mines
+## Causal-inference mines
 
 - **Multi-value features**: "has x vs lacks x" is contaminated when a dominant value exists — the "lacks x" group is a mixture of rows hitting *other* values, which can manufacture significant effects of the wrong sign. Use **"only x" vs "all empty"**, plus a dose table (hit 0/1/2/3 values) where monotonicity is independent evidence, plus MH stratification.
 - **Channel confounding**: when two sub-populations differ structurally (integration type, platform, source), pooled effects can flip sign vs within-group effects — a real evaluation flipped from +4.2% pooled to −2.8% stratified. Split by the structural dimension by default; aggregate only via within-group stratification.
@@ -30,4 +30,4 @@ Before any analysis report / dashboard / conclusion ships, walk every headline c
 
 This gate grows by subtraction from reality: every time a delivered or almost-delivered conclusion dies, its killer pattern gets appended here. Domain-specific mine lists (table quirks, field semantics) do NOT belong in this skill — they live in project memory and per-repo reference docs.
 
-<!-- Homegrown methodology, distilled from refuted-conclusion post-mortems in project memory. Maintained in light-skills. -->
+<!-- Source: homegrown, distilled from refuted-conclusion post-mortems in project memory. Maintained in light-skills. -->

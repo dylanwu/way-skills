@@ -1,6 +1,6 @@
 ---
 name: to-tdd
-description: Test-driven development. Use when building features or fixing bugs test-first, mentions of "red-green-refactor", or when changing model training / feature encoding / calibration code that has a pure-function core.
+description: Red → green test-driven development. Use when building features or fixing bugs test-first, or when changing model training / feature encoding / calibration code that has a pure-function core. Triggered by "TDD", "红绿循环", "test-first".
 ---
 
 # Test-Driven Development
@@ -56,4 +56,4 @@ Before deploying ANY model change, all four must pass:
 3. **Sentinel inputs** — unscored / sentinel rows through the traced model produce defined outputs, not garbage.
 4. **Channel-off uses a deterministic mask, never dropout with p=1.0** — dropout is train-only; p=1.0 leaves the embedding untrained yet *read at inference*, producing a seed-dependent bias. A mask is deterministic on both ends (verifiable bit-exact).
 
-<!-- Skeleton adapted from mattpocock/skills `tdd` (MIT License); ML appendix homegrown from project post-mortems. Maintained in light-skills. -->
+<!-- Source: skeleton adapted from mattpocock/skills `tdd` (MIT); ML appendix homegrown from project post-mortems. Maintained in light-skills. -->
