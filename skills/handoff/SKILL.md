@@ -1,5 +1,5 @@
 ---
-name: plan-handoff
+name: handoff
 description: Write a plan or handoff document that a fresh session can pick up and execute. Use when pausing unfinished work, transferring context to a new session, or laying out a multi-step implementation. Triggered by "handoff", "交接", "写个 plan", "落个文档".
 ---
 
@@ -11,12 +11,10 @@ Produce a document that lets a fresh agent (or future you) continue the work wit
 
 Follow the current repo's existing convention first; only fall back to the default when none exists:
 
-| Repo | Convention |
-|---|---|
-| fancy-model | Plans in `nn_model/docs/plans/`; a module that already has a `HANDOFF.md` next to the work area (e.g. `nn_model/dp_opt_ts/HANDOFF.md`) gets that file **updated in place** |
-| saber | Date-prefixed design docs at `docs/` root: `YYYY-MM-DD-<topic>-design.md` |
-| chatbi-skills | Repeatable operational procedures are **runbooks**, not handoffs — they go to `docs/runbooks/` |
-| anywhere else | `docs/plans/YYYY-MM-DD-<topic>.md` |
+1. A `HANDOFF.md` already sitting next to the work area → **update it in place**.
+2. An existing plans/design-docs directory (look for `docs/plans/`, module-level `docs/plans/`, or date-prefixed design docs) → follow its location and naming pattern.
+3. A repeatable *operational procedure* is a **runbook**, not a handoff — if the repo has a runbooks directory, it goes there.
+4. No convention found → `docs/plans/YYYY-MM-DD-<topic>.md`.
 
 Never save to the OS temp directory — these documents are project artifacts and belong in the repo.
 

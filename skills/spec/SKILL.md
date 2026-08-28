@@ -1,5 +1,5 @@
 ---
-name: to-spec
+name: spec
 description: "Turn the current conversation into a spec saved to the repo's plans directory: no interview, just synthesis of what you've already discussed."
 disable-model-invocation: true
 ---
@@ -14,7 +14,7 @@ This skill takes the current conversation context and codebase understanding and
 
 Check with the user that these seams match their expectations.
 
-3. Write the spec using the template below, then save it to the repo's plan directory. Follow the repo's existing convention if one exists (e.g. `nn_model/docs/plans/` in fancy-model, `docs/` date-prefixed design docs in saber); otherwise default to `docs/plans/`. Filename: `YYYY-MM-DD-<feature-name>-spec.md` with today's actual date. Do not publish it anywhere online.
+3. Write the spec using the template below, then save it to the repo's plan directory. Follow the repo's existing plans/design-docs convention if one exists; otherwise default to `docs/plans/`. Filename: `YYYY-MM-DD-<feature-name>-spec.md` with today's actual date. Do not publish it anywhere online.
 
 <spec-template>
 
