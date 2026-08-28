@@ -31,13 +31,24 @@ Ask: "What's the public interface, and which seams should we test?"
 
 ## Before the first red
 
-Reaching for this skill means the work is feature-scale — **never run the loop on the default branch**. Create a feature branch first, preferably in a **worktree** so the main checkout stays clean and usable:
+Reaching for this skill means the work is feature-scale — **never run the loop on the default branch**. Set up isolation first:
+
+1. **Already isolated?** If the session is already inside a linked worktree (harness-created or otherwise), use it — never nest another.
+2. **Prefer the harness's native worktree tool** (e.g. `EnterWorktree`) — it owns placement, branching, and cleanup. Only without one, fall back to git, project-local:
+   ```bash
+   git check-ignore -q .worktrees || { echo ".worktrees/" >> .gitignore && git add .gitignore && git commit -m "ignore worktrees"; }
+   git worktree add .worktrees/feature-<name> -b feature/<name>
+   ```
+   The worktree lives inside the project (`.worktrees/` at the repo root) and the directory must be git-ignored before anything is created in it.
+3. **Verify a clean baseline** — run the existing test suite before writing the first red. A dirty baseline makes every later failure ambiguous.
+
+Every slice — including subagent dispatches — runs inside the worktree; the branch already exists when it's time to submit the MR/PR, and parallel slices that must touch overlapping files get their isolation for free (see Driver mode).
+
+**After the MR merges**, clean up in the same motion as returning to the default branch — a merged worktree left behind is stale state, exactly like a merged branch:
 
 ```bash
-git worktree add ../<repo>-<feature> -b feature/<name>
+git worktree remove .worktrees/feature-<name> && git branch -d feature/<name>
 ```
-
-Every slice — including subagent dispatches — runs inside it. This also means the branch already exists when it's time to submit the MR/PR, and parallel slices that must touch overlapping files get their isolation for free (see Driver mode).
 
 ## Rules of the loop
 
