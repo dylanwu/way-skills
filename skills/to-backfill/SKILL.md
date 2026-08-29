@@ -7,6 +7,10 @@ description: Discipline for one-off data backfills in multi-layer pipelines — 
 
 A backfill into a multi-layer pipeline is not done until it has propagated to the layer consumers actually read. Every rule here comes from a real incident.
 
+## Start from what already exists
+
+Loading this skill is not a reason to start over. If the backfill is already written — in this session, or in the repo — read it and hold it against the rules below; do not re-derive the plan, re-discover the toolchain, or re-explore the pipeline you just explored. When the ask is for the steps, the status, or a runbook of work already done, write it from what is already known and stop. Re-discovery here is not diligence; it burns the session's context on facts it already holds and invites a second, divergent answer.
+
 ## Iron rule: backfill does not propagate by itself
 
 Filling an upstream table does **not** re-derive its downstream tables. Real incident: upstream showed 71k backfilled rows, downstream had 0 — the consumer (a model) then trained on ~10 samples and produced default-level outputs in production.
@@ -32,6 +36,18 @@ A backfill is only as good as the assertions guarding it, and a wrong assertion 
 
 In shell specifically: use `set -eo pipefail`, because plain `set -e` sees only the last command of a pipeline and `check | tee log` reports `tee`'s success; and when one run covers N partitions, assert the marker appears N times, because `grep | tail -1` reads only the last.
 
+## Batch coarser than the pipeline runs
+
+The production job's cadence is not a template for the backfill's granularity. When the pipeline updates hourly, backfill **a day per run**, letting the hour ride in as a dynamic partition, rather than mirroring its twenty-four invocations:
+
+- Twenty-four runs per day is twenty-four chances to die halfway and twenty-four partial states to reason about. One run is one.
+- Per-invocation startup dominates when the work inside each invocation is a single hour.
+- It gives the gate a natural assertion: one run should emit one marker per hour partition, so the marker count check above has an obvious expected value.
+
+A day is also the ceiling, not just the floor — it is the largest unit most clusters swallow without tuning, and it keeps a bad run's blast radius to one day you can simply redo.
+
+Split finer only on a **recorded** exception: a table that provably cannot finish a day in one run. That is a fact about that table and that cluster, not a general truth, so it lives in project memory — check there before splitting, and write it down when you find a new one.
+
 ## Fill holes, don't overwrite
 
 When backfilling a column that multiple sources write, an unconditional overwrite erases other sources' truth. Default to **filling only empty cells**; overwriting non-empty values requires explicit sign-off, with a before/after count of values changed.
@@ -50,6 +66,6 @@ One-off backfill scripts go into a dedicated per-task directory (dated, named), 
 
 Shared pieces go in a `common/` sibling. Never scatter one-off scripts into production script directories — stray backfill scripts once outnumbered the production SQL around them 16 to 9, unversioned.
 
-Copy **structure, never invocations.** Layout, naming and file roles are what an earlier task is good for; its binary names, conf flags and cluster parameters were frozen the day it was archived and rot from there. Prefer the most recent task over any older one, and confirm every command you copy still exists in the repo today. Before writing a verification helper, grep for one — an earlier task has often solved the same problem, and its version has already survived review.
+Copy **structure, never invocations.** Layout, naming and file roles are what an earlier task is good for; its binary names, conf flags and cluster parameters were frozen the day it was archived and rot from there. Prefer the most recent task over any older one, and when you do copy a command, confirm that one still exists in the repo before it goes in a script. Likewise, *before writing* a verification helper, grep for one — an earlier task has often solved the same problem, and its version has already survived review. Both checks belong to the moment of writing; neither is a reason to re-survey the environment afterwards.
 
 <!-- Source: homegrown, generalized from backfill incidents in project memory. Maintained in way-skills. -->
