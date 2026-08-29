@@ -36,6 +36,18 @@ A backfill is only as good as the assertions guarding it, and a wrong assertion 
 
 In shell specifically: use `set -eo pipefail`, because plain `set -e` sees only the last command of a pipeline and `check | tee log` reports `tee`'s success; and when one run covers N partitions, assert the marker appears N times, because `grep | tail -1` reads only the last.
 
+## Batch coarser than the pipeline runs
+
+The production job's cadence is not a template for the backfill's granularity. When the pipeline updates hourly, backfill **a day per run**, letting the hour ride in as a dynamic partition, rather than mirroring its twenty-four invocations:
+
+- Twenty-four runs per day is twenty-four chances to die halfway and twenty-four partial states to reason about. One run is one.
+- Per-invocation startup dominates when the work inside each invocation is a single hour.
+- It gives the gate a natural assertion: one run should emit one marker per hour partition, so the marker count check above has an obvious expected value.
+
+A day is also the ceiling, not just the floor — it is the largest unit most clusters swallow without tuning, and it keeps a bad run's blast radius to one day you can simply redo.
+
+Split finer only on a **recorded** exception: a table that provably cannot finish a day in one run. That is a fact about that table and that cluster, not a general truth, so it lives in project memory — check there before splitting, and write it down when you find a new one.
+
 ## Fill holes, don't overwrite
 
 When backfilling a column that multiple sources write, an unconditional overwrite erases other sources' truth. Default to **filling only empty cells**; overwriting non-empty values requires explicit sign-off, with a before/after count of values changed.
