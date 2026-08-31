@@ -71,6 +71,18 @@ Sort findings rather than fixing as you read: **fix now** (wrong behavior, broke
 
 **Verify a finding before implementing it.** A reviewer — human or agent — can be wrong about this codebase. Check it against reality and push back with reasoning instead of agreeing performatively. When a finding says to implement something properly, grep for a caller first: an unused thing gets deleted, not completed. If several findings arrive and any is unclear, settle all of them before implementing any — they are often related, and half-understood feedback implements the wrong thing.
 
+**Bound the reviewer, or review costs more than it saves.** The price is set by what the reviewer reads and re-runs, not by the size of the diff:
+
+- **The reviewer does not dispatch.** Never a sub-reviewer for part of the diff, never a second opinion. The loop already grants every review seat the work gets; a spawned reviewer duplicates one at full cost and its verdict counts for nothing. Too large for one pass means review it in passes and say so.
+- **The diff is the reviewer's view of the change.** Its context lines *are* the changed files — don't re-open them, don't crawl the codebase. Look outside the diff only for a risk you can name, one focused check per risk, and report both the risk and the check. Changed lock ordering, an altered contract, shared mutable state are legitimate named risks, and call sites are the right check.
+- **Don't re-run the suite to confirm the implementer's claims.** Treat the report as unverified, then verify it *against the diff*: does it name the covering tests and show their output? Re-run only when reading the code raises a doubt no existing run answers — and then one focused test, never a package-wide suite.
+- **Read-only on the checkout.** No mutation of tree, index, HEAD or branch; a reviewer that needs another revision makes its own worktree.
+- **Return the report and nothing else** — every line a verdict, a finding with file:line, or a check that was run. No preamble, no process narration.
+
+**A re-review after a fix round is scoped, and does not extend the loop.** Verdict each prior finding `ADDRESSED` or `NOT ADDRESSED` with file:line — *attempted* is not addressed, the defect must be gone — then inspect the fix diff alone for new breakage. Anything noticed outside it is an out-of-scope observation: recorded for the end-of-branch pass, never a blocker for this slice. Without that boundary every fix round costs a fresh review and the loop never terminates, because each pass finds something new.
+
+**End every review with a verdict the driver can act on** without asking a follow-up question. And when the fault is in the brief rather than the code, say so — that finding goes back to the driver, not to the implementer.
+
 Some smells only exist at the scale of a whole change: one logical change forcing scattered edits, one module edited for unrelated reasons, the same switch recurring across files. Those are what the harness's full review is for — once, at the end, not per slice. Note what that pass costs: it runs on this session's own model by construction, with no tier to choose, which makes it the single most expensive call in the loop. That is a reason to keep it rare and deliberate, not a reason to skip it.
 
 ## Driver mode (default where the harness supports it)
