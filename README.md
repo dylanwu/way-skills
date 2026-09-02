@@ -5,7 +5,7 @@ A lightweight, self-maintained set of methodology skills for **Claude Code and C
 **Two design principles:**
 
 1. **Methodology only.** These skills carry transferable method, never business knowledge. Domain facts (table quirks, field semantics, repo paths) live in project memory and per-repo reference docs.
-2. **Uniform `to-` prefix.** The prefix is a namespace: it avoids collisions with built-in commands and other skill sets, and makes the batch visually one family: `to-explore`, `to-grill`, `to-spec`, `to-plan`, `to-handoff`, `to-tdd`, `to-debug`, `to-refute`, `to-query`, `to-backfill`.
+2. **Uniform `to-` prefix.** The prefix is a namespace: it avoids collisions with built-in commands and other skill sets, and makes the batch visually one family: `to-explore`, `to-grill`, `to-spec`, `to-plan`, `to-handoff`, `to-drive`, `to-tdd`, `to-debug`, `to-refute`, `to-query`, `to-backfill`.
 
 ## Roster
 
@@ -18,7 +18,8 @@ Ordered by where they sit in the work lifecycle:
 | to-spec | Turn the current conversation into a spec saved to the repo's plans directory | adapted from mattpocock/skills (MIT) |
 | to-plan | Implementation plans that decompose work into independently verifiable tasks | homegrown, inspired by superpowers writing-plans |
 | to-handoff | Compact session state into a handoff document a fresh session can pick up | adapted from mattpocock/skills (MIT) |
-| to-tdd | Red-green TDD in driver mode (subagents implement, model by complexity), solo fallback where the harness has no dispatch, plus an ML appendix | mattpocock skeleton + superpowers driver mode (MIT), ML appendix homegrown |
+| to-drive | Coordinating work that subagents implement: the cost model, plan-as-state, per-dispatch model tiering, review as a dispatch | superpowers subagent-driven-development + both code-review skills, mattpocock code-review (MIT), reorganised around measured cost |
+| to-tdd | Red-green TDD: what a good test is, seams, anti-patterns, the rules of the loop, plus an ML appendix | mattpocock skeleton (MIT), ML appendix homegrown |
 | to-debug | Root-cause-first debugging discipline with four phases | copied from the superpowers plugin v6.3.0 (MIT) |
 | to-refute | Adversarial self-check that tries to kill every headline claim before an analysis ships: generic gate + causal-inference mines | homegrown from refuted-conclusion post-mortems |
 | to-query | Query-hygiene methodology for partitioned warehouse tables (liveness, sentinels, joins, double counting) | homegrown from query-incident post-mortems |
@@ -30,7 +31,7 @@ Symlink each skill directory into the harness's skills directory. New symlinks a
 
 ```bash
 REPO=/Users/dylanwu/NAS/bobodsm/Career/Fancy/Git/way-skills
-SKILLS="to-explore to-grill to-spec to-plan to-handoff to-tdd to-debug to-refute to-query to-backfill"
+SKILLS="to-explore to-grill to-spec to-plan to-handoff to-drive to-tdd to-debug to-refute to-query to-backfill"
 
 for n in $SKILLS; do ln -s $REPO/skills/$n ~/.claude/skills/$n; done   # Claude Code
 for n in $SKILLS; do ln -s $REPO/skills/$n ~/.codex/skills/$n;  done   # Codex
@@ -38,7 +39,7 @@ for n in $SKILLS; do ln -s $REPO/skills/$n ~/.codex/skills/$n;  done   # Codex
 
 ## Codex compatibility
 
-Verified on `codex-cli 0.150.0-alpha.12.2` (2026-08-28): all ten load through the symlinks, multi-file skill directories resolve through the symlink, and cross-skill references work. Two harness differences are handled in-tree, so the same files serve both:
+Verified on `codex-cli 0.150.0-alpha.12.2` (2026-08-28): all eleven load through the symlinks, multi-file skill directories resolve through the symlink, and cross-skill references work. Two harness differences are handled in-tree, so the same files serve both:
 
 | | Claude Code | Codex |
 |---|---|---|
@@ -49,6 +50,12 @@ Verified on `codex-cli 0.150.0-alpha.12.2` (2026-08-28): all ten load through th
 | Subagent dispatch | yes, with per-dispatch model choice | **none** — to-tdd falls back to Solo mode |
 
 Codex silently ignores `disable-model-invocation`, which is why `to-spec` carries both that field and an `agents/openai.yaml`; Claude Code ignores the `agents/` directory in turn. Any future skill that must not be model-routed needs both.
+
+## tools/
+
+Repo maintenance, not skills — the methodology-only rule applies to `skills/`, not here.
+
+- `tools/driver-cost.py` — measure what a `to-tdd` driver session actually cost and whether its rules held: driver-side `Edit`/`Write` count, harness `/code-review` invocations, dispatches missing an explicit model, and the driver's own `cache_read` bill. Run it after a real driver run and compare against the last one; the rules in `to-tdd` are claims about these numbers, so this is how they get checked rather than felt.
 
 ## Sources & licenses
 
